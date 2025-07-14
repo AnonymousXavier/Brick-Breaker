@@ -2,24 +2,28 @@ local paddle = require("src.Core.paddle")
 local settings = require("src.settings")
 local misc = require("src.misc_functions")
 
-local player = {dx = 0, speed = settings.default_player_speed, balls={}, rot_angle = math.rad(-90)}
+local player = {dx = 0, speed = settings.default_player_speed, balls={}, rot_angle = math.rad(-95)}
 local states = { IDLE = 1, PLAYING = 2 }
 
+player.default_rot_angle = math.rad(-95)
 player.state = states.IDLE
 player.lives = 2
-player.score = 0
 
 
 function player.init()
-    player.paddle = paddle.new(settings.paddle_default_X, settings.paddle_default_Y, settings.paddle_width,
+    player.reset()
+    player.lives = settings.player_initial_lives
+end
+
+function player.new_paddle()
+    return paddle.new(settings.paddle_default_X, settings.paddle_default_Y, settings.paddle_width,
     settings.paddle_height, settings.Colors.paddle)
 end
 
 function player.reset()
-    player.paddle = paddle.new(settings.paddle_default_X, settings.paddle_default_Y, settings.paddle_width,
-    settings.paddle_height, settings.Colors.paddle)
+    player.paddle = player.new_paddle()
     player.state = states.IDLE
-    player.rot_angle = math.rad(-90)
+    player.rot_angle = player.default_rot_angle
 end
 
 function player.update_state()
@@ -93,9 +97,11 @@ end
 
 function player.release_ball()
     local ball = player.get_last_ball_added()
-    ball.just_spawned = false
-    ball.direction.x = math.cos(player.rot_angle)
-    ball.direction.y = math.sin(player.rot_angle)
+    if ball.just_spawned then
+        ball.just_spawned = false
+        ball.direction.x = math.cos(player.rot_angle)
+        ball.direction.y = math.sin(player.rot_angle)
+    end
 end
 
 function player.process_input()

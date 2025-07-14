@@ -1,3 +1,4 @@
+local settings = require("src.settings")
 local misc = {}
 
 --- @param key_table table
@@ -28,6 +29,28 @@ function misc.remove_from_list(table, value) -- Removes value by shifting values
         if found then
             table[i] = table[i + 1]
         end
+    end
+end
+
+function misc.get_row_and_col_from_index(i, cols)
+    local c = (i - 1) % cols + 1
+    local r = math.ceil(i / cols)
+
+    return {r=r, c=c}
+    
+end
+
+function misc.save_high_score(score)
+    local current_highscore = misc.load_high_score()
+    if score > current_highscore then love.filesystem.write(settings.highscore_file_path, tostring(score)) end 
+end
+
+function misc.load_high_score()
+    if love.filesystem.getInfo(settings.highscore_file_path) then
+        local contents = love.filesystem.read(settings.highscore_file_path)
+        return tonumber(contents) or 0
+    else
+        return 0
     end
 end
 

@@ -16,7 +16,7 @@ end
 
 function hud.draw()
     hud.draw_lives()
-    hud.draw_score()
+    hud.draw_level()
     hud.draw_balls()
     hud.draw_animated_texts()
 end
@@ -29,8 +29,8 @@ function hud.draw_lives()
 end
 
 function hud.draw_balls()
-    local fontSize = 18
-    local font = love.graphics.newFont(fontSize)
+    local fontSize = settings.ball_count_font_size
+    local font = settings.Fonts.ball_count
 
     local text = string.format("X%d", #world.balls)
     local text_width = (#text + 1) * fontSize
@@ -59,7 +59,7 @@ function hud.draw_animated_texts()
     for _, powerup in ipairs(hud.power_ups_tweening) do
         if not powerup.remove then 
             local text = powerup
-            local font = love.graphics.newFont(settings.pickup_message_font_size)
+            local font = settings.Fonts.pickup_message
             local tw, th = font:getWidth(text.text) * text.scale, font:getHeight() * text.scale
 
             love.graphics.setFont(font)
@@ -75,8 +75,8 @@ function hud.draw_animated_texts()
     end
 end
 
-function hud.draw_score()
-    local text = string.format("SCORE: %d", world.player.score)
+function hud.draw_level()
+    local text = string.format("LEVEL: %d", world.level)
     local x, y = 8, (settings.hud_height - settings.font_size) / 2
     love.graphics.print(text, x, y)
 end

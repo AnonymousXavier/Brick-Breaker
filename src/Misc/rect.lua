@@ -23,7 +23,7 @@ function rect:get_center()
 end
 
 function rect:draw()
-    love.graphics.setColor(settings.Color.debug.r, settings.Color.debug.g, settings.Color.debug.b)
+    love.graphics.setColor(settings.Colors.debug.r, settings.Colors.debug.g, settings.Colors.debug.b)
     love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
 end
 

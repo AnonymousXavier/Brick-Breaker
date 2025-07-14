@@ -105,7 +105,6 @@ function Ball:update(dt)
     if self.bounces_left <= 0 and self.is_floor_a_wall then self.is_floor_a_wall = false end
 
     self.bounces_left = misc_functions.clamp(self.bounces_left, 0, settings.default_bounces_till_effect_wears_off)
-    print(self.bounces_left)
 end 
 
 
